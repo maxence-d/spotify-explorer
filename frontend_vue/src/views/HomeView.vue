@@ -1,13 +1,68 @@
 <template>
   <div class="home">
-    Home
+    <section class="hero is-medium is-dark mb-6">
+        <div class="hero-body has-text-centered">
+            <p class="title mb-6">
+                Spotify-Explorer
+            </p>
+            <p class="subtitle">
+                Explore your Spotify
+            </p>
+        </div>
+    </section>
+
+    <div class="columns is-multiline">
+      <div class="column is-12">
+          <h2 class="is-size-2 has-text-centered">Artists</h2>
+      </div>
+
+      <ArtistBox 
+        v-for="artist in artists"
+        v-bind:key="artist.id"
+        v-bind:product="artist" />
+
+      <div 
+        v-for="artist in artists"
+        v-bind:sp_id="artist.sp_id"
+        v-bind:artist="artist" >
+        {{artist.sp_id}}<br/>
+        {{artist.name}}<br/>
+        {{artist}}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import ArtistBox from '@/components/ArtistBox'
 export default {
   name: 'Home',
+  data() {
+    return {
+      artists: []
+    }
+  },
   components: {
+    ArtistBox: ArtistBox
+  },
+  mounted() {
+    this.getArtists()
+    document.title = 'Home | Spotify-Explorer'
+  },
+  methods: {
+    async getArtists() {
+      this.$store.commit('setIsLoading', true)
+      await axios
+        .get('/api/v1/artists/')
+        .then(response => {
+          this.artists = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      this.$store.commit('setIsLoading', false)
+    }
   }
 }
 </script>
