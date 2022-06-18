@@ -8,7 +8,8 @@ class Artist(models.Model):
     sp_id = models.CharField(max_length=255)   
     followers = models.IntegerField()
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
-    slug = models.SlugField()
+    thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
+
 
     class Meta:
         ordering = ('name',)
@@ -17,7 +18,7 @@ class Artist(models.Model):
         return f"{self.name} ({self.sp_id})"
 
     def get_absolute_url(self):
-        return f'/{self.category.slug}/{self.slug}/'
+        return f'/artist/{self.sp_id}/'
     
     def get_image(self):
         if self.image:
