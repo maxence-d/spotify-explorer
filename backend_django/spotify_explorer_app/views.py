@@ -20,3 +20,10 @@ class ArtistDetail(APIView):
         artist = self.get_object(sp_id)
         serializer = ArtistSerializer(artist)
         return Response(serializer.data)
+
+
+class ArtistList(APIView):
+    def get(self, request, format=None):
+        artists = Artist.objects.all()
+        serializer = ArtistSerializer(artists, many=True)
+        return Response(serializer.data)
