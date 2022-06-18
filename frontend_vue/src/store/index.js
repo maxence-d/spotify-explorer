@@ -28,6 +28,7 @@ export default createStore({
     removeToken(state) {
         state.token = ''
         state.isAuthenticated = false
+        localStorage.setItem('token', state.token)
     }
   },
   actions: {
