@@ -16,3 +16,6 @@ Migrate database
 python manage.py makemigrations
 python manage.py migrate
 ```
+
+Run frontend
+`npm run serve`
