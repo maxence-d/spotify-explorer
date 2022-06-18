@@ -5,7 +5,7 @@ from PIL import Image
 
 class Artist(models.Model):
     name = models.CharField(max_length=255)
-    sp_id = models.CharField(max_length=255)   
+    sp_id = models.CharField(max_length=255, primary_key=True)   
     followers = models.IntegerField()
     image = models.ImageField(upload_to='uploads/', blank=True, null=True)
     thumbnail = models.ImageField(upload_to='uploads/', blank=True, null=True)
