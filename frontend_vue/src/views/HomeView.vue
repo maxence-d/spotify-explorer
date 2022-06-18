@@ -19,16 +19,7 @@
       <ArtistBox 
         v-for="artist in artists"
         v-bind:key="artist.id"
-        v-bind:product="artist" />
-
-      <div 
-        v-for="artist in artists"
-        v-bind:sp_id="artist.sp_id"
-        v-bind:artist="artist" >
-        {{artist.sp_id}}<br/>
-        {{artist.name}}<br/>
-        {{artist}}
-      </div>
+        v-bind:artist="artist" />
     </div>
   </div>
 </template>
