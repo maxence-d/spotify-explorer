@@ -11,7 +11,7 @@
                             <tbody>
                                 <tr>
                                     <td>Name</td>
-                                    <td>{{ me.username }}</td>
+                                    <td>{{this.me.username}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -56,7 +56,7 @@ export default {
     },
     mounted() {
         document.title = 'My account | Spotify-Explorer'
-        if (this.$store.isAuthenticated) {
+        if (this.$store.state.isAuthenticated) {
             this.getMe()
         }
     },
@@ -72,6 +72,7 @@ export default {
             await axios
                 .get('/api/v1/users/me')
                 .then(response => {
+                    console.log(response.data)
                     this.me = response.data
                 })
                 .catch(error => {

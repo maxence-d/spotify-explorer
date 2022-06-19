@@ -6,7 +6,7 @@
           </p>
         </div>
         <footer class="card-footer">
-          <template v-if=this.sp_is_auth>
+          <template v-if="$store.state.is_sp_authenticated">
             <p class="card-footer-item">
               <button class="button" @click="logOut()" >Signed In</button>
             </p>
@@ -16,7 +16,7 @@
               Not authenticated
             </p>
             <p class="card-footer-item">
-              <button class="button" @click="sp_do_auth()">Log in</button>
+              <button class="button" @click="sp_do_auth()">Log into Spotify</button>
             </p>
           </template>
         </footer>
@@ -29,7 +29,6 @@ export default {
   name: 'SpotifyBox',
   data() {
     return {
-      sp_is_auth : false
     }
   },
   components: {
@@ -43,14 +42,25 @@ export default {
       await axios
         .get("/api/v1/sp_is_auth")
         .then(response => {
-          localStorage.setItem("is_sp_authenticated", response.data.sp_is_auth) 
-          this.sp_is_auth = response.data.sp_is_auth
+          this.$store.state.is_sp_authenticated = response.data.sp_is_auth
         })
         .catch(error => {
           console.log(error)
         })
       this.$store.commit('setIsLoading', false)
-    },
+    },    
+    async sp_do_auth() {
+      this.$store.commit('setIsLoading', true)
+        axios.get("/api/v1/sp_get_auth_url")
+                .then((response) =>
+                {
+                  console.log(response.data.url)
+                  //window.location.replace(response.data.url);
+                }).catch(error => {
+                  console.log(error)
+                });
+      this.$store.commit('setIsLoading', false)
+    }
   }
 }
 </script>
