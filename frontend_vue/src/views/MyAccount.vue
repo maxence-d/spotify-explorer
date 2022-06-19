@@ -1,12 +1,12 @@
 <template>
     <div class="page-my-account">
-        <div class="columns is-multiline">
-            <div class="column is-12">
-                <h1 class="title">My account</h1>
-            </div>
-
-            <div class="content">
-                <table>
+        <div class="column is-12">
+            <h1 class="title">My account</h1>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="box">
+                <table class="table">
                     <tbody>
                     <tr>
                         <td>Name</td>
@@ -14,22 +14,27 @@
                     </tr>
                     </tbody>
                 </table>
+                </div>
             </div>
-            <div class="column is-12">
-                <button @click="logout()" class="button is-danger">Log out</button>
+            <div class="column">
+                <SpotifyBox />
             </div>
-            <hr>
+        </div>
+        <div class="column">
+            <button @click="logout()" class="button is-danger">Log out</button>
         </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import SpotifyBox from '@/components/SpotifyBox'
 
 export default {
     name: 'MyAccount',
-    components: {
-    },
+  components: {
+    SpotifyBox: SpotifyBox
+  },
     data() {
         return {
             me:{}
