@@ -5,10 +5,19 @@
                 <h1 class="title">My account</h1>
             </div>
 
+            <div class="content">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>Name</td>
+                        <td>{{me.username}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
             <div class="column is-12">
                 <button @click="logout()" class="button is-danger">Log out</button>
             </div>
-             <p>{{ me }}</p>
             <hr>
         </div>
     </div>
