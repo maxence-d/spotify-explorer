@@ -37,7 +37,6 @@
             <div class="buttons">
               <template v-if="$store.state.isAuthenticated">
                 <router-link to="/my-account" class="button is-light">My account</router-link>
-                <router-link to="/log-in" @click="logOut()" class="button is-light">Log-out</router-link>
               </template>
               <template v-else>
                 <router-link to="/log-in" class="button is-light">Log in</router-link>
@@ -77,9 +76,6 @@ export default {
     }
   },
   methods: {
-    logOut() {
-      this.$store.commit('removeToken')
-    }
   },
   mounted() {
   },

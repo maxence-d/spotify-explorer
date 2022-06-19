@@ -31,11 +31,3 @@ class ArtistList(APIView):
         return Response(serializer.data)
 
         
-class UserView(APIView):
-    authentication_classes = [authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, format=None):
-        orders = Order.objects.filter(user=request.user)
-        serializer = MyOrderSerializer(orders, many=True)
-        return Response(serializer.data)

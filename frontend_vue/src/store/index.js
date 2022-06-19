@@ -31,7 +31,6 @@ export default createStore({
         localStorage.removeItem("token")
         localStorage.removeItem("username")
         localStorage.removeItem("userid")
-
     }
   },
   actions: {

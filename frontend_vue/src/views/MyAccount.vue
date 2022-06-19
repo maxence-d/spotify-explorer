@@ -1,29 +1,46 @@
 <template>
-    <div class="page-my-account">
-        <div class="column is-12">
-            <h1 class="title">My account</h1>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="box">
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td>Name</td>
-                        <td>{{me.username}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+
+    <template v-if="$store.state.isAuthenticated">
+        <div class="page-my-account">
+            <div class="column is-12">
+                <h1 class="title">My account</h1>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="box">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td>{{me.username}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+                <div class="column">
+                    <SpotifyBox />
                 </div>
             </div>
             <div class="column">
-                <SpotifyBox />
+                <button @click="logout()" class="button is-danger">Log out</button>
             </div>
         </div>
-        <div class="column">
-            <button @click="logout()" class="button is-danger">Log out</button>
-        </div>
+    </template>
+    <template v-else>
+    <div class="box">
+        <div class="card">
+            <div class="card-content">
+                <div class="content">
+                Please log-in first.
+                </div>
+            </div>
+            <footer class="card-footer">
+                <router-link to="/log-in" class="button is-light">Log in</router-link>
+            </footer>
+            </div>
     </div>
+    </template>
 </template>
 
 <script>
@@ -42,7 +59,9 @@ export default {
     },
     mounted() {
         document.title = 'My account | Spotify-Explorer'
-        this.getMe()
+        if (this.$store.isAuthenticated){
+            this.getMe()
+        }
     },
     methods: {
         logout() {
