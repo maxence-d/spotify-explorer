@@ -57,3 +57,11 @@ class SpotifyToken(models.Model):
     access_token = models.CharField(max_length=150)
     expires_in = models.DateTimeField()
     token_type = models.CharField(max_length=50)
+
+    @classmethod
+    def create(cls, user, refresh_token, access_token, expires_in, token_type):
+        return cls(user=user, refresh_token=refresh_token, access_token=access_token, expires_in=expires_in, token_type=token_type)
+        
+    def __str__(self):
+        return f"{self.user} ({self.created_at}) ({self.refresh_token}) ({self.access_token}) ({self.expires_in}) ({self.token_type})"
+

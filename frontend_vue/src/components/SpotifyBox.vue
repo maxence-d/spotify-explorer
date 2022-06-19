@@ -55,7 +55,7 @@ export default {
                 .then((response) =>
                 {
                   console.log(response.data.url)
-                  //window.location.replace(response.data.url);
+                  window.location.replace(response.data.url);
                 }).catch(error => {
                   console.log(error)
                 });

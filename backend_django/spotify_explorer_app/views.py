@@ -12,6 +12,8 @@ from .utils import is_spotify_authenticated
 from rest_framework import status, authentication, permissions
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
+from django.utils import timezone
+from datetime import timedelta
 
 class ArtistDetail(APIView):
     def get_object(self, sp_id):
@@ -60,6 +62,7 @@ class SpGetAuthURL(APIView):
 
 @authentication_classes([authentication.TokenAuthentication])
 @permission_classes([permissions.IsAuthenticated])
+@api_view(('GET',))
 def spotify_callback(request, format=None):
     code = request.GET.get('code')
     error = request.GET.get('error')
@@ -71,17 +74,15 @@ def spotify_callback(request, format=None):
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET
     }).json()
-
     error = response.get('error')
     if not error:
-        sp_token = SpotifyToken(
+        expires_in = timezone.now() + timedelta(seconds=response.get('expires_in'))
+        sp_token = SpotifyToken.create(
             user=request.user, 
-            access_token=response.get('access_token'),
             refresh_token=response.get('refresh_token'), 
+            access_token=response.get('access_token'),
+            expires_in=expires_in,
             token_type=response.get('token_type'), 
-            expires_in=response.get('expires_in')
         )
         sp_token.save()
-        return Response({'status': True}, status=status.HTTP_200_OK)
-    else:
-        return Response({'status': False}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'status': True}, status=status.HTTP_200_OK)
