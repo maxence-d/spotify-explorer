@@ -3,10 +3,12 @@ from django.http import Http404
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 
 from .models import Artist
 from .serializers import ArtistSerializer
+
+from rest_framework import status, authentication, permissions
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
 
 class ArtistDetail(APIView):
@@ -26,4 +28,14 @@ class ArtistList(APIView):
     def get(self, request, format=None):
         artists = Artist.objects.all()
         serializer = ArtistSerializer(artists, many=True)
+        return Response(serializer.data)
+
+        
+class UserView(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, format=None):
+        orders = Order.objects.filter(user=request.user)
+        serializer = MyOrderSerializer(orders, many=True)
         return Response(serializer.data)

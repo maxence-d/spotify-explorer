@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import ArtistView  from '../views/ArtistView.vue'
 import LogIn from '../views/LogIn.vue'
 import SignUp from '../views/SignUp.vue'
+import MyAccount from '../views/MyAccount.vue'
 
 const routes = [
   {
@@ -29,6 +30,14 @@ const routes = [
     path: '/sign-up',
     name: 'SignUp',
     component: SignUp
+  },
+  {
+    path: '/my-account',
+    name: 'MyAccount',
+    component: MyAccount,
+    meta: {
+        requireLogin: true
+    }
   },
 ]
 
