@@ -37,7 +37,7 @@ class IsAuthenticated(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, format=None):
-        sp_token = SpotifyToken.objects.filter(user=request.user)
+        sp_token = SpotifyToken.objects.filter(user=request.user).first()
         is_authenticated = is_spotify_authenticated(sp_token)
-        return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
+        return Response({'sp_is_auth': is_authenticated}, status=status.HTTP_200_OK)
 

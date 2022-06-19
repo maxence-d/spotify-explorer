@@ -30,7 +30,7 @@
         <div class="box">
             <div class="card">
                 <div class="card-content">
-                Please log-in first.
+                    Please log-in first.
                 </div>
             </div>
             <footer class="card-footer">
@@ -51,7 +51,7 @@ export default {
     },
     data() {
         return {
-            me: {}
+            me: {},
         }
     },
     mounted() {
@@ -84,7 +84,7 @@ export default {
                 })
 
             this.$store.commit('setIsLoading', false)
-        }
+        },
     }
 }
 </script>
