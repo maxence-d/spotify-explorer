@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.http import Http404
+from django.shortcuts import redirect
 from .credentials import REDIRECT_URI, CLIENT_SECRET, CLIENT_ID
 
 from rest_framework.views import APIView
@@ -40,7 +41,7 @@ class SpIsAuthenticated(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, format=None):
-        sp_token = SpotifyToken.objects.filter(user=request.user).first()
+        sp_token = SpotifyToken.objects.filter(user="AnonymousUser").first()
         is_authenticated = is_spotify_authenticated(sp_token)
         return Response({'sp_is_auth': is_authenticated}, status=status.HTTP_200_OK)
 
@@ -77,12 +78,12 @@ def spotify_callback(request, format=None):
     error = response.get('error')
     if not error:
         expires_in = timezone.now() + timedelta(seconds=response.get('expires_in'))
-        sp_token = SpotifyToken.create(
+        sp_token = SpotifyToken.objects.get_or_create(
             user=request.user, 
             refresh_token=response.get('refresh_token'), 
             access_token=response.get('access_token'),
             expires_in=expires_in,
             token_type=response.get('token_type'), 
-        )
+        )[0]
         sp_token.save()
-    return Response({'status': True}, status=status.HTTP_200_OK)
+    return redirect("http://localhost:8080/my-account")
