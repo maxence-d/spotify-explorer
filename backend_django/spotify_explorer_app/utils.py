@@ -13,6 +13,10 @@ def get_user_tokens(session_id):
     return SpotifyToken.objects.filter(user=session_id).first()
 
 
+def remove_user_tokens(session_id):
+    SpotifyToken.objects.filter(user=session_id).first().delete()
+
+
 def get_or_make_user_token(session_id, access_token, token_type, expires_in, refresh_token):
     tokens = get_user_tokens(session_id)
     expires_in = timezone.now() + timedelta(seconds=expires_in)
@@ -65,7 +69,6 @@ def execute_spotify_api_request(endpoint=None, session_id="AnonymousUser", post_
         post(BASE_URL + endpoint, headers=headers)
     if put_:
         put(BASE_URL + endpoint, headers=headers)
-
 
     response = get(BASE_URL + endpoint, {}, headers=headers)
 

@@ -11,4 +11,5 @@ class ArtistSerializer(serializers.ModelSerializer):
             "name",
             "get_absolute_url",
             "image_url",
+            "following"
         )

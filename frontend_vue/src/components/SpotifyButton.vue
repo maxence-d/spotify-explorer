@@ -1,6 +1,6 @@
 <template>
     <template v-if="$store.state.is_sp_authenticated">
-        <p class="button is-success">
+        <p class="button is-success" @click="sp_logout()">
             Signed In
         </p>
     </template>
@@ -24,12 +24,37 @@ export default {
         this.get_sp_auth()
     },
     methods: {
+        async sp_logout() {
+            await axios
+                .get("/api/v1/sp/logout")
+                .then(response => {
+                    this.$store.state.is_sp_authenticated = response.data.sp_is_auth
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
         async get_sp_auth() {
             this.$store.commit('setIsLoading', true)
             await axios
                 .get("/api/v1/sp_is_auth")
                 .then(response => {
                     this.$store.state.is_sp_authenticated = response.data.sp_is_auth
+                    if(this.$store.state.is_sp_authenticated){
+                        this.refresh_following()
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            this.$store.commit('setIsLoading', false)
+        },
+        async refresh_following() {
+            this.$store.commit('setIsLoading', true)
+            await axios
+                .get("/api/v1/sp/me/following")
+                .then(response => {
+                    console.log(response.data)
                 })
                 .catch(error => {
                     console.log(error)
