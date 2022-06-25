@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .credentials import REDIRECT_URI, CLIENT_SECRET, CLIENT_ID
+from .model_utils import get_or_make_artist_from_sp
 from .models import Artist
 from .serializers import ArtistSerializer
 from .utils import is_spotify_authenticated, execute_spotify_api_request, get_or_make_user_token
@@ -37,6 +38,7 @@ class ArtistList(APIView):
 class SpFetchArtist(APIView):
     def get(self, request, sp_id, format=None):
         response, code = execute_spotify_api_request(f"artists/{sp_id}")
+        get_or_make_artist_from_sp(sp_id, response)
         if code.status_code == status.HTTP_200_OK:
             return Response({'sp_artist': response}, status=code.status_code)
         else:

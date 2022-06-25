@@ -10,6 +10,5 @@ class ArtistSerializer(serializers.ModelSerializer):
             "sp_id",
             "name",
             "get_absolute_url",
-            "get_image",
-            "get_thumbnail"
+            "image_url",
         )
