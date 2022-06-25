@@ -1,18 +1,15 @@
 <template>
     <div class="page-artist">
-        <div class="columns">
+        <div class="columns" v-if="this.artist">
             <div class="column is-3">
-                <figure class="image is-640x640" >
+                <figure class="image is-640x640">
                     <img v-bind:src="artist.image_url">
                 </figure>
-
-
             </div>
 
-            <div class="column is-3">                
+            <div class="column is-3">
                 <h1 class="title">{{ artist.name }}</h1>
-                <p class="has-text-grey-light">{{ artist.sp_id}}</p>
-
+                <p class="has-text-grey-light">{{ artist.sp_id }}</p>
             </div>
         </div>
     </div>
@@ -20,24 +17,21 @@
 
 <script>
 import axios from 'axios'
-import { toast } from 'bulma-toast'
 export default {
     name: 'Artist',
+    props: ['sp_id'],
     data() {
         return {
-            artist: {},
-            quantity: 1
+            artist: null
         }
     },
     mounted() {
-        this.getArtist() 
     },
     methods: {
         async getArtist() {
             this.$store.commit('setIsLoading', true)
-            const sp_id = this.$route.params.sp_id
             await axios
-                .get(`/api/v1/artist/${sp_id}/`)
+                .get(`/api/v1/artist/${this.sp_id}/`)
                 .then(response => {
                     this.artist = response.data
                     document.title = this.artist.name + ' | Djackets'
@@ -45,8 +39,12 @@ export default {
                 .catch(error => {
                     console.log(error)
                 })
-            
             this.$store.commit('setIsLoading', false)
+        }
+    },
+    watch: {
+        sp_id: function(newVal){
+            this.getArtist()   // or this.openPopup(newVal) is this suits
         }
     }
 }

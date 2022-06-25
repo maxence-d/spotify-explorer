@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ArtistView  from '../views/ArtistView.vue'
 import LogIn from '../views/LogIn.vue'
 import SignUp from '../views/SignUp.vue'
 import MyAccount from '../views/MyAccount.vue'
@@ -15,11 +14,6 @@ const routes = [
     path: '/about',
     name: 'about',
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
-  {
-    path: '/artist/:sp_id',
-    name: 'Artist',
-    component: ArtistView
   },
   {
     path: '/log-in',

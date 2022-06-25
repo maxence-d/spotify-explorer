@@ -5,7 +5,8 @@ export default createStore({
     isAuthenticated: false,
     is_sp_authenticated: false,
     token: '',
-    isLoading: false
+    isLoading: false,
+    artist: null
   },
   getters: {
   },
@@ -32,7 +33,11 @@ export default createStore({
         localStorage.removeItem("token")
         localStorage.removeItem("username")
         localStorage.removeItem("userid")
-    }
+    },
+    setCurrentArtist(state, artist) {
+      state.artist = artist
+      console.log(artist)
+    },
   },
   actions: {
   },

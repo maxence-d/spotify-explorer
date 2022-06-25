@@ -1,14 +1,9 @@
 <template>
   <div class="home">
     <section class="hero is-medium is-dark mb-6">
-        <div class="hero-body has-text-centered">
-            <p class="title mb-6">
-                Spotify-Explorer
-            </p>
-            <p class="subtitle">
-                Explore your Spotify
-            </p>
-        </div>
+        <ArtistView
+         v-bind:sp_id="this.$store.state.artist"
+        />
     </section>
 
     <div class="columns is-multiline">
@@ -19,7 +14,8 @@
       <ArtistBox 
         v-for="artist in artists"
         v-bind:key="artist.id"
-        v-bind:artist="artist" />
+        v-bind:artist="artist"
+         />
     </div>
   </div>
 </template>
@@ -27,16 +23,18 @@
 <script>
 import axios from 'axios'
 import ArtistBox from '@/components/ArtistBox'
+import ArtistView from '../components/ArtistView.vue'
 export default {
   name: 'Home',
   data() {
     return {
-      artists: []
+      artists: [],
     }
   },
   components: {
-    ArtistBox: ArtistBox
-  },
+    ArtistBox: ArtistBox,
+    ArtistView: ArtistView
+},
   mounted() {
     this.getArtists()
     document.title = 'Home | Spotify-Explorer'

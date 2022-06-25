@@ -38,8 +38,8 @@ class ArtistList(APIView):
 class SpFetchArtist(APIView):
     def get(self, request, sp_id, format=None):
         response, code = execute_spotify_api_request(f"artists/{sp_id}")
-        get_or_make_artist_from_sp(sp_id, response)
         if code.status_code == status.HTTP_200_OK:
+            get_or_make_artist_from_sp(sp_id, response)
             return Response({'sp_artist': response}, status=code.status_code)
         else:
             return Response({'error': response}, status=code.status_code)
