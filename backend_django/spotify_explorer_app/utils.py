@@ -1,7 +1,6 @@
 from datetime import timedelta
 
 from django.utils import timezone
-
 from requests import post, put, get
 
 from .credentials import CLIENT_ID, CLIENT_SECRET
@@ -67,9 +66,10 @@ def execute_spotify_api_request(endpoint=None, session_id="AnonymousUser", post_
     if put_:
         put(BASE_URL + endpoint, headers=headers)
 
-    print(BASE_URL + endpoint)
+
     response = get(BASE_URL + endpoint, {}, headers=headers)
+
     try:
-        return response.json()
+        return response.json(), response
     except:
-        return {'Error': 'Issue with request'}
+        return None

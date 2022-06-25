@@ -1,6 +1,7 @@
-from django.db import models
 from io import BytesIO
+
 from PIL import Image
+from django.db import models
 
 
 class Artist(models.Model):
@@ -64,4 +65,3 @@ class SpotifyToken(models.Model):
         
     def __str__(self):
         return f"{self.user} ({self.created_at}) ({self.refresh_token}) ({self.access_token}) ({self.expires_in}) ({self.token_type})"
-

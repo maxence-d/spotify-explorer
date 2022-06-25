@@ -1,20 +1,17 @@
-from django.db.models import Q
+import json
+
 from django.http import Http404
 from django.shortcuts import redirect
-from .credentials import REDIRECT_URI, CLIENT_SECRET, CLIENT_ID
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from requests import Request, post
-
-from .models import Artist, SpotifyToken
-from .serializers import ArtistSerializer
-from .utils import is_spotify_authenticated, get_user_tokens, execute_spotify_api_request, get_or_make_user_token
 from rest_framework import status, authentication, permissions
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from django.utils import timezone
-from datetime import timedelta
+from .credentials import REDIRECT_URI, CLIENT_SECRET, CLIENT_ID
+from .models import Artist
+from .serializers import ArtistSerializer
+from .utils import is_spotify_authenticated, execute_spotify_api_request, get_or_make_user_token
 
 
 class ArtistDetail(APIView):
@@ -37,10 +34,13 @@ class ArtistList(APIView):
         return Response(serializer.data)
 
 
-class SpFetchArtist(APIView, ):
+class SpFetchArtist(APIView):
     def get(self, request, sp_id, format=None):
-        print(execute_spotify_api_request(f"artists/{sp_id}"))
-        return Response()
+        response, code = execute_spotify_api_request(f"artists/{sp_id}")
+        if code.status_code == status.HTTP_200_OK:
+            return Response({'sp_artist': response}, status=code.status_code)
+        else:
+            return Response({'error': response}, status=code.status_code)
 
 
 class SpIsAuthenticated(APIView):
