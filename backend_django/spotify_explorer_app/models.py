@@ -2,13 +2,13 @@ from io import BytesIO
 from django.contrib.auth.models import User
 from PIL import Image
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 
 class Artist(models.Model):
     name = models.CharField(max_length=255)
     sp_id = models.CharField(max_length=255, primary_key=True)
     followers = models.IntegerField()
-    following = models.ManyToManyField(User, default=None)
     image_url = models.URLField(default='')
 
     class Meta:
@@ -19,6 +19,13 @@ class Artist(models.Model):
 
     def get_absolute_url(self):
         return f'/artist/{self.sp_id}/'
+
+
+class CustomUser(AbstractUser):
+    pass
+
+    def __str__(self):
+        return self.username
 
 
 class SpotifyToken(models.Model):
