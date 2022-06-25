@@ -9,12 +9,13 @@ from requests import Request, post
 
 from .models import Artist, SpotifyToken
 from .serializers import ArtistSerializer
-from .utils import is_spotify_authenticated
+from .utils import is_spotify_authenticated, get_user_tokens, execute_spotify_api_request, get_or_make_user_token
 from rest_framework import status, authentication, permissions
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
 from django.utils import timezone
 from datetime import timedelta
+
 
 class ArtistDetail(APIView):
     def get_object(self, sp_id):
@@ -22,7 +23,7 @@ class ArtistDetail(APIView):
             return Artist.objects.get(sp_id=sp_id)
         except Artist.DoesNotExist:
             raise Http404
-    
+
     def get(self, request, sp_id, format=None):
         artist = self.get_object(sp_id)
         serializer = ArtistSerializer(artist)
@@ -36,18 +37,25 @@ class ArtistList(APIView):
         return Response(serializer.data)
 
 
+class SpFetchArtist(APIView, ):
+    def get(self, request, sp_id, format=None):
+        print(execute_spotify_api_request(f"artists/{sp_id}"))
+        return Response()
+
+
 class SpIsAuthenticated(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, format=None):
-        sp_token = SpotifyToken.objects.filter(user="AnonymousUser").first()
-        is_authenticated = is_spotify_authenticated(sp_token)
+        is_authenticated = is_spotify_authenticated("AnonymousUser")
         return Response({'sp_is_auth': is_authenticated}, status=status.HTTP_200_OK)
+
 
 class SpGetAuthURL(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request, format=None):
         scopes = 'user-read-playback-state user-modify-playback-state user-read-currently-playing'
 
@@ -77,13 +85,10 @@ def spotify_callback(request, format=None):
     }).json()
     error = response.get('error')
     if not error:
-        expires_in = timezone.now() + timedelta(seconds=response.get('expires_in'))
-        sp_token = SpotifyToken.objects.get_or_create(
-            user=request.user, 
-            refresh_token=response.get('refresh_token'), 
-            access_token=response.get('access_token'),
-            expires_in=expires_in,
-            token_type=response.get('token_type'), 
-        )[0]
-        sp_token.save()
+        get_or_make_user_token("AnonymousUser",
+                               response.get('access_token'),
+                               response.get('token_type'),
+                               response.get('expires_in'),
+                               response.get('refresh_token')
+                               )
     return redirect("http://localhost:8080/my-account")

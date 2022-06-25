@@ -9,4 +9,5 @@ urlpatterns = [
     path('sp_is_auth/', views.SpIsAuthenticated.as_view()),
     path('sp_get_auth_url/', views.SpGetAuthURL.as_view()),
     path('redirect', spotify_callback),
+    path('sp/artist/<slug:sp_id>/', views.SpFetchArtist.as_view()),
 ]
