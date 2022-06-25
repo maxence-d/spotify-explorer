@@ -1,20 +1,17 @@
 <template>
     <div class="page-artist">
-        <div class="columns is-multiline">
-            <div class="column is-9">
-                <figure class="image mb-6">
-                    <img v-bind:src="artist.get_image">
+        <div class="columns">
+            <div class="column is-3">
+                <figure class="image is-640x640" >
+                    <img v-bind:src="artist.image_url">
                 </figure>
 
-                <h1 class="title">{{ artist.name }}</h1>
 
-                <p>{{ artist.description }}</p>
             </div>
 
-            <div class="column is-3">
-                <h2 class="subtitle">Information</h2>
-
-                <p><strong>Spotify ID: </strong>{{ artist.sp_id}}</p>
+            <div class="column is-3">                
+                <h1 class="title">{{ artist.name }}</h1>
+                <p class="has-text-grey-light">{{ artist.sp_id}}</p>
 
             </div>
         </div>
