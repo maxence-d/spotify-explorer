@@ -11,8 +11,8 @@ from rest_framework.views import APIView
 
 from .credentials import REDIRECT_URI, CLIENT_SECRET, CLIENT_ID
 from .model_utils import get_or_make_artist_from_sp, update_following
-from .models import Artist
-from .serializers import ArtistSerializer
+from .models import Artist, CustomUser
+from .serializers import ArtistSerializer, CustomUserSerializer
 from .utils import is_spotify_authenticated, execute_spotify_api_request, get_or_make_user_token, remove_user_tokens
 
 
@@ -33,9 +33,15 @@ class ArtistList(APIView):
     def get(self, request, format=None):
         artists = Artist.objects.all()
         serializer = ArtistSerializer(artists, many=True)
-        pprint(serializer.data)
         return Response(serializer.data)
 
+class UserFollowingList(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    def get(self, request, format=None):
+        user = CustomUser.objects.get(user=request.user)
+        serializer = CustomUserSerializer(user)
+        return Response(serializer.data)
 
 class SpFetchArtist(APIView):
     def get(self, request, sp_id, format=None):
@@ -113,4 +119,4 @@ def spotify_callback(request, format=None):
                                response.get('expires_in'),
                                response.get('refresh_token')
                                )
-    return redirect("http://localhost:8080/my-account")
+    return redirect("http://localhost:8080/")

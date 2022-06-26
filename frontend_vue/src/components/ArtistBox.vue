@@ -1,12 +1,17 @@
 <template>
-    <div class="column is-3">
-    <div class="box" @click="this.$store.commit(`setCurrentArtist`,artist.sp_id)">
-        <h3 class="is-size-4">{{ artist.name }}</h3>
-        <figure class="image m-1">
-            <img v-bind:src="artist.image_url">
-        </figure>
-        <p class="is-size-6 has-text-grey">{{ artist.sp_id }}</p>
-    </div></div>
+    <div class="column is-3 m-2" :class="cardColor">
+        <div class="card m-3 is-radiusless is-shadowless" @click="this.$store.commit(`setCurrentArtist`, artist.sp_id)">
+            <div class="card-image">
+                <figure class="image">
+                    <img v-bind:src="artist.image_url">
+                </figure>
+            </div>
+            <div class="content" :class="cardColor">
+                <p class="title">{{ artist.name }}</p>
+                <p class="subtitle is-6 has-text-grey">{{ artist.sp_id }}</p>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -14,6 +19,17 @@ export default {
     name: 'ArtistBox',
     props: {
         artist: Object
+    },
+    computed: {
+        cardColor() {
+            var following = this.$store.state.user.following;
+            if(following && following.includes(this.artist.sp_id)){
+                return "has-background-danger-light";
+            }
+            else{
+                return "";
+            }
+        }
     }
 }
 </script>

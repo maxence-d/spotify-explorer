@@ -1,11 +1,10 @@
 import json
 from pprint import pprint
 
-from .models import Artist
+from .models import Artist, CustomUser
 
 
 def get_or_make_artist_from_sp(sp_id, sp_artist=None):
-    pprint(sp_artist)
     artist = Artist.objects.filter(sp_id=sp_id).first()
     if not artist:
         artist = Artist(sp_id=sp_artist["id"],
@@ -18,8 +17,10 @@ def get_or_make_artist_from_sp(sp_id, sp_artist=None):
 
 
 def update_following(current_user, following):
+    user = CustomUser.objects.get(user=current_user)
+    user.following.clear()
     for artist in following["artists"]["items"]:
         artist_obj = Artist.objects.filter(sp_id=artist["id"]).first()
         if artist_obj:
-            artist_obj.following.add(current_user)
-            artist_obj.save()
+            user.following.add(artist_obj)
+    user.save()

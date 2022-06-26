@@ -6,7 +6,10 @@ export default createStore({
     is_sp_authenticated: false,
     token: '',
     isLoading: false,
-    artist: null
+    artist: null,
+    user:{
+      following:[]
+    }
   },
   getters: {
   },
@@ -22,6 +25,9 @@ export default createStore({
     },
     setIsLoading(state, status) {
       state.isLoading = status
+    },
+    setFollowing(state, following) {
+      state.user.following = following
     },
     setToken(state, token) {
         state.token = token

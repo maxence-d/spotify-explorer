@@ -117,8 +117,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = "spotify_explorer_app.CustomUser"
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 

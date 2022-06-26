@@ -2,7 +2,6 @@ from io import BytesIO
 from django.contrib.auth.models import User
 from PIL import Image
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 
 
 class Artist(models.Model):
@@ -21,11 +20,9 @@ class Artist(models.Model):
         return f'/artist/{self.sp_id}/'
 
 
-class CustomUser(AbstractUser):
-    pass
-
-    def __str__(self):
-        return self.username
+class CustomUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    following = models.ManyToManyField(Artist)
 
 
 class SpotifyToken(models.Model):

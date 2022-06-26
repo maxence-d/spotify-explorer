@@ -59,6 +59,15 @@ export default {
                 .catch(error => {
                     console.log(error)
                 })
+            await axios
+                .get("/api/v1/me/following")
+                .then(response => {
+                    console.log(response.data)
+                    this.$store.commit('setFollowing', response.data.following)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
             this.$store.commit('setIsLoading', false)
         },
         async sp_do_auth() {

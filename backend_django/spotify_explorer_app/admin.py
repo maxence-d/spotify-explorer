@@ -1,19 +1,7 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
 
-from .models import Artist, SpotifyToken
+from .models import Artist, SpotifyToken, CustomUser
 
-from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser
-
-
-class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
-    model = CustomUser
-    list_display = ["email", "username", ]
-
-
-admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Artist)
 admin.site.register(SpotifyToken)
+admin.site.register(CustomUser)

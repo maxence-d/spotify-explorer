@@ -33,19 +33,23 @@
           </div>
         </div>
         <div class="navbar-end">
+
+          <div class="navbar-item">
+            <div class="button is-warning" @click="debug()">
+              debug
+            </div>
+          </div>
           <div class="navbar-item">
             <SpotifyButton />
           </div>
           <div class="navbar-item">
             <div class="buttons">
-
               <template v-if="$store.state.isAuthenticated">
                 <router-link to="/my-account" class="button is-light">My account</router-link>
               </template>
               <template v-else>
                 <router-link to="/log-in" class="button is-light">Log in</router-link>
               </template>
-
             </div>
           </div>
         </div>
@@ -85,6 +89,20 @@ export default {
     }
   },
   methods: {
+    async debug(){
+      console.log("debug start")
+      await axios
+        .get('/api/v1/me/following')
+        .then(response => {
+          console.log("debug response")
+          console.log(response.data)
+        })
+        .catch(error => {
+          console.log("debug error")
+          console.log(error)
+        })
+      console.log("debug end")
+    }
   },
   mounted() {
   },
