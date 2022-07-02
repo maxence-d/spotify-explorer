@@ -8,7 +8,7 @@
                 <h1 class="title m-3 ">{{ artist.name }}</h1>
                 <p class="has-text-grey-light m-3">{{ artist.sp_id }}</p>
             </div>
-            <div class="columns is-multiline">
+            <div >
                 <AlbumBox v-for="album in albums.items" :album="album" />
             </div>
         </div>

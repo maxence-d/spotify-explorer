@@ -1,14 +1,24 @@
 <template>
-    <div class="column is-3 m-2" :class="cardColor">
+    <div class="column m-2" :class="cardColor">
         <div class="card m-3 is-radiusless is-shadowless">
             <div class="card-image">
                 <figure class="image">
-                    <img v-bind:src="album.images[1].url">
+                   
                 </figure>
             </div>
-            <div class="content" >
-                <p class="title">{{ album.name }}</p>
-                <p class="subtitle is-6 has-text-grey">{{ album.sp_id }}</p>
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-128x128 m-3">
+                         <img v-bind:src="album.images[1].url">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <p class="title is-4">{{ album.name }}</p>
+                    <p class="subtitle is-6">{{ album.sp_id }}</p>
+                </div>
+            </div>
+            <div class="content">
+                hello
             </div>
         </div>
     </div>
