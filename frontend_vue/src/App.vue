@@ -35,9 +35,7 @@
         <div class="navbar-end">
 
           <div class="navbar-item">
-            <div class="button is-warning" @click="debug()">
-              debug
-            </div>
+            <DebugButton />
           </div>
           <div class="navbar-item">
             <SpotifyButton />
@@ -67,10 +65,12 @@
 <script>
 import axios from 'axios'
 import SpotifyButton from '@/components/SpotifyButton'
+import DebugButton from './components/DebugButton.vue'
 
 export default {
   components: {
-    SpotifyButton: SpotifyButton
+    SpotifyButton: SpotifyButton,
+    DebugButton: DebugButton
   },
   data() {
     return {
@@ -89,20 +89,6 @@ export default {
     }
   },
   methods: {
-    async debug(){
-      console.log("debug start")
-      await axios
-        .get('/api/v1/me/following')
-        .then(response => {
-          console.log("debug response")
-          console.log(response.data)
-        })
-        .catch(error => {
-          console.log("debug error")
-          console.log(error)
-        })
-      console.log("debug end")
-    }
   },
   mounted() {
   },

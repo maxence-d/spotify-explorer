@@ -34,7 +34,7 @@ export default {
                 .get(`/api/v1/artist/${this.sp_id}/`)
                 .then(response => {
                     this.artist = response.data
-                    document.title = this.artist.name + ' | Djackets'
+                    document.title = this.artist.name + ' | SpotifyExplorer'
                 })
                 .catch(error => {
                     console.log(error)
