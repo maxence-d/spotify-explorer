@@ -35,13 +35,24 @@ class ArtistList(APIView):
         serializer = ArtistSerializer(artists, many=True)
         return Response(serializer.data)
 
+
 class UserFollowingList(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request, format=None):
         user = CustomUser.objects.get(user=request.user)
         serializer = CustomUserSerializer(user)
         return Response(serializer.data)
+
+
+class SpFetchAlbums(APIView):
+    def get(self, request, sp_id, format=None):
+        response, code = execute_spotify_api_request(f"artists/{sp_id}/albums")
+        if code.status_code == status.HTTP_200_OK:
+            return Response({'sp_albums': response}, status=code.status_code)
+        else:
+            return Response({'error': response}, status=code.status_code)
 
 class SpFetchArtist(APIView):
     def get(self, request, sp_id, format=None):
@@ -53,10 +64,10 @@ class SpFetchArtist(APIView):
             return Response({'error': response}, status=code.status_code)
 
 
-
 class SpFetchFollowing(APIView):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request, format=None):
         response, code = execute_spotify_api_request(f"me/following?type=artist")
         if code.status_code == status.HTTP_200_OK:
@@ -73,6 +84,7 @@ class SpIsAuthenticated(APIView):
     def get(self, request, format=None):
         is_authenticated = is_spotify_authenticated("AnonymousUser")
         return Response({'sp_is_auth': is_authenticated}, status=status.HTTP_200_OK)
+
 
 class SpLogout(APIView):
     def get(self, request, format=None):

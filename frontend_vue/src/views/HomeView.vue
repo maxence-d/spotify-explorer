@@ -1,21 +1,13 @@
 <template>
   <div class="home">
-    <section class="hero is-medium is-dark mb-6">
-        <ArtistView
-         v-bind:sp_id="this.$store.state.artist"
-        />
-    </section>
+    <ArtistView v-bind:sp_id="this.$store.state.artist" />
 
     <div class="columns is-multiline">
       <div class="column is-12">
-          <h2 class="is-size-2 has-text-centered">Artists</h2>
+        <h2 class="is-size-2 has-text-centered">Artists</h2>
       </div>
 
-      <ArtistBox 
-        v-for="artist in artists"
-        v-bind:key="artist.id"
-        v-bind:artist="artist"
-         />
+      <ArtistBox v-for="artist in artists" v-bind:key="artist.id" v-bind:artist="artist" />
     </div>
   </div>
 </template>
@@ -34,7 +26,7 @@ export default {
   components: {
     ArtistBox: ArtistBox,
     ArtistView: ArtistView
-},
+  },
   mounted() {
     this.getArtists()
     document.title = 'Home | Spotify-Explorer'

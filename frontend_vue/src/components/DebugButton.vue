@@ -20,7 +20,7 @@ export default {
         async debug() {
             console.log("debug start")
             await axios
-                .get('/api/v1/me/following')
+                .get('/api/v1/sp/artist/2ITljoufW3HYgBnHFsCAIh/albums')
                 .then(response => {
                     console.log("debug response")
                     console.log(response.data)

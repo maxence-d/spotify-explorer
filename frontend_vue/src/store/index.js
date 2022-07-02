@@ -6,7 +6,7 @@ export default createStore({
     is_sp_authenticated: false,
     token: '',
     isLoading: false,
-    artist: null,
+    artist: "2ITljoufW3HYgBnHFsCAIh",
     user:{
       following:[]
     }
